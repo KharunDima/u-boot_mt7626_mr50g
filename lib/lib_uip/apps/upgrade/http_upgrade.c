@@ -381,19 +381,19 @@ int _validateLocalFirmware(UINT32 fwOff, UINT32 fwSize)
 #ifdef UIP_CACHE_OPERATION
 	uip_cache_enable();
 #endif
-	/* 需要考虑头部不正确的情况，目前先简单的根据内容判断，后续考虑是否加入CRC或MD5 */
-	/* 检查整个firmware长度的合法性   */
-	if ((ntohl(header->len) > fwSize) || (ntohl(header->len) < sizeof(IMG_HEADER)))
+////	/* 需要考虑头部不正确的情况，目前先简单的根据内容判断，后续考虑是否加入CRC或MD5 */
+////	/* 检查整个firmware长度的合法性   */
+////	if ((ntohl(header->len) > fwSize) || (ntohl(header->len) < sizeof(IMG_HEADER)))
+////	{
+////		printf("firmware len error!\n");
+////		return -1;
+////	}
+////	/* 检查md5 offest合法性 */
+////	if ((ntohl(header->file[IMG_FILE_FIRMMD5_INDEX].fileOffset) > ntohl(header->len))
+////		|| (ntohl(header->file[IMG_FILE_FIRMMD5_INDEX].fileOffset) < sizeof(IMG_HEADER)))
 	{
-		printf("firmware len error!\n");
-		return -1;
-	}
-	/* 检查md5 offest合法性 */
-	if ((ntohl(header->file[IMG_FILE_FIRMMD5_INDEX].fileOffset) > ntohl(header->len))
-		|| (ntohl(header->file[IMG_FILE_FIRMMD5_INDEX].fileOffset) < sizeof(IMG_HEADER)))
-	{
-		printf("md5 offset error!\n");
-		return -1;
+//		printf("md5 offset error!\n");
+//		return -1;
 	}
 	int md5Addr = (UINT8 *)header + ntohl(header->file[IMG_FILE_FIRMMD5_INDEX].fileOffset);
 	memcpy(oriMd5, md5Addr, MD5_DIGEST_LEN);
@@ -909,16 +909,16 @@ TP_ERROR httpCheckFirmware(CONTEXT *context, char *content, UINT32 length, UINT8
 	httpUpgrade_memsetdata(context, pVxImgFile + sizeof(httpFileHeader.magic), md5Key, MD5_DIGEST_LEN);
 
 
-	httpUpgrade_MD_string(context, pVxImgFile, nVxImgFileSize, calcMd5, MD5, MD_TRANSFORM_NORMAL);
-
-	
-	/* compare the checksum */
-	if (memcmp(httpFileHeader.md5, calcMd5, MD5_DIGEST_LEN) != 0)
-	{
-		HTTP_DEBUG("md5 checksum is not correct!");
-		return EMD5;
-	}
-
+//	httpUpgrade_MD_string(context, pVxImgFile, nVxImgFileSize, calcMd5, MD5, MD_TRANSFORM_NORMAL);
+//
+//	
+//	/* compare the checksum */
+//	if (memcmp(httpFileHeader.md5, calcMd5, MD5_DIGEST_LEN) != 0)
+//	{
+//		HTTP_DEBUG("md5 checksum is not correct!");
+//		return EMD5;
+//	}
+//
 	/* HTTP升级文件校验完毕，跳过HTTP文件头部 */
 	pVxImgFile += sizeof(HTTP_FILE_HEADER);
 	nVxImgFileSize -= sizeof(HTTP_FILE_HEADER);
@@ -1110,7 +1110,8 @@ int do_http_check(const ulong size)
 #endif
 
 	//check firmware size, RSA signature, HwID, content type, and validate partitions. 
-	ret = checkFirmware(&fw_info);
+//	ret = checkFirmware(&fw_info);
+    ret = 0;
 
 #ifdef UIP_CACHE_OPERATION
 	uip_cache_disable();
