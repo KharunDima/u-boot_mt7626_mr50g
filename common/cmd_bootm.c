@@ -835,7 +835,7 @@ typedef struct _TP_HEAD
 /*******************************************************************/
 /* bootm - boot application image from image in memory */
 /*******************************************************************/
-#if 1
+#if 0
 #include "image_header.h"
 #define CONFIG_FIRMWARE_LOAD_ADDR	0x40205000
 
@@ -895,6 +895,8 @@ int do_bootm(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 	return 0;
 }
 #else
+#if 0
+/* Резервная TP-Link реализация отключена */
 int do_bootm(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
 	typedef void __noreturn (*image_entry_noargs_t)(void);
@@ -938,6 +940,7 @@ int do_bootm(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 
 	return 0;
 }
+#endif
 
 int do_bootm(cmd_tbl_t *cmdtp, int flag, int argc, char * const argv[])
 {
